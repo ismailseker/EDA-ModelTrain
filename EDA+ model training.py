@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -20,4 +23,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 data = pd.read_csv('data.csv')
+
+g = sns.pairplot(data, hue='class', markers=['o','s'], kind='reg',
+                 plot_kws={'line_kws': {'color' : 'blue','lw':.8},
+                 'scatter_kws':{'alpha':.3,'s':3}},height=1.5)
+plot.show()
 
