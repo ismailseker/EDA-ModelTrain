@@ -27,5 +27,9 @@ data = pd.read_csv('data.csv')
 g = sns.pairplot(data, hue='class', markers=['o','s'], kind='reg',
                  plot_kws={'line_kws': {'color' : 'blue','lw':.8},
                  'scatter_kws':{'alpha':.3,'s':3}},height=1.5)
-plot.show()
 
+fig,ax = plt.subplots(nrows=1, ncols=1, figsize=(18,6))
+sns.heatmap(data.drop(columns=['class']).corr(), cmap ="YlGnBu", annot=True, ax=ax)
+ax.set_title("Correlation Heat Map", fontsize = 20)
+
+plt.show()
