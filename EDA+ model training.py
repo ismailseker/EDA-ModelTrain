@@ -27,9 +27,44 @@ data = pd.read_csv('data.csv')
 g = sns.pairplot(data, hue='class', markers=['o','s'], kind='reg',
                  plot_kws={'line_kws': {'color' : 'blue','lw':.8},
                  'scatter_kws':{'alpha':.3,'s':3}},height=1.5)
-
+#  plt.show()
 fig,ax = plt.subplots(nrows=1, ncols=1, figsize=(18,6))
 sns.heatmap(data.drop(columns=['class']).corr(), cmap ="YlGnBu", annot=True, ax=ax)
 ax.set_title("Correlation Heat Map", fontsize = 20)
 
-plt.show()
+# plt.show()
+
+def plot_categorical(dataset, categorical_feature, rows, cols, kind):
+    fig,ax = plt.subplots(nrows=2,ncols=4, figsize=(12,8))
+    features = dataset.columns.values[:-1]
+    
+    counter = 0
+    dataset['class'].value_counts().plot.bar(ax = ax[0,0])
+    dataset['class'].value_counts().plot.pie(ax = ax[0,1], autopct='%1.1f%%')
+    
+    for i in range(rows):
+        for j in range(cols):
+            feature = features[counter]
+            if (i == 0 and j == 0) or (i == 0 and j == 1): continue
+            else:
+                if kind == 'swarm':
+                    sns.swarmplot(data=dataset, 
+                                  x=categorical_feature, 
+                                  y=feature,
+                                  hue=categorical_feature, 
+                                  ax=ax[i,j])
+                if kind == 'box':
+                    sns.boxplot(data=dataset,
+                                x=categorical_feature,
+                                y=feature,
+                                hue=categorical_feature,
+                                ax=ax[i,j])
+                counter += 1
+                if counter >= len(features): break
+    plt.tight_layout()
+    plt.show()
+    
+plot_categorical(dataset=data, categorical_feature='class', rows=2, cols=4, kind='swarm')
+                
+
+    
