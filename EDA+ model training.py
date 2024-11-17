@@ -63,8 +63,31 @@ def plot_categorical(dataset, categorical_feature, rows, cols, kind):
                 if counter >= len(features): break
     plt.tight_layout()
     plt.show()
+# Before Outlier 
+# plot_categorical(dataset=data, categorical_feature='class', rows=2, cols=4, kind='swarm')
+
+# Dealing with Outliers
+# First Option
+def cap_outliers(data):
     
-plot_categorical(dataset=data, categorical_feature='class', rows=2, cols=4, kind='swarm')
+    data_capped = data.copy()
+    numeric_columns = data_capped.select_dtypes(include = [float,int]).columns
+    
+    for column in numeric_columns:
+        Q1 = data_capped[column].quantile(0.25)
+        Q3 = data_capped[column].quantile(0.75)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR 
+        
+        data_capped[column] = data_capped[column].apply(lambda x: lower_bound if x < lower_bound else upper_bound if x > upper_bound else x)
+        
+    return data_capped
+
+data_capped = cap_outliers(data)
+# After Outlier
+plot_categorical(dataset=data_capped, categorical_feature='class', rows=2, cols=4, kind='swarm')
+    
                 
 
     
