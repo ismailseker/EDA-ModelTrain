@@ -87,6 +87,26 @@ def cap_outliers(data):
 data_capped = cap_outliers(data)
 # After Outlier
 plot_categorical(dataset=data_capped, categorical_feature='class', rows=2, cols=4, kind='swarm')
+
+# Data transformation
+data['class'] = [1 if each == 'Abnormal' else 0 for each in data['class']]
+
+y = data['class'].values
+x = data.drop(['class'],axis=1)
+
+# Standartizion,Normalization
+
+scaler = StandardScaler()
+data_scaled = scaler.fit_transform(x)
+columns_data = x.columns
+scaled_x = pd.DataFrame(data_scaled, columns=columns_data)
+x = scaled_x
+
+
+
+
+
+                
     
                 
 
