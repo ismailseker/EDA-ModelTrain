@@ -102,6 +102,54 @@ columns_data = x.columns
 scaled_x = pd.DataFrame(data_scaled, columns=columns_data)
 x = scaled_x
 
+# train
+
+x_train,x_test,y_train,y_test = train_test_split(x,y, train_size=0.2,random_state=42)
+
+# training models
+
+scores = dict()
+
+logreg = LogisticRegression()
+logreg.fit(x_train, y_train)
+print('Logistic Regression Score: ',logreg.score(x_test, y_test))
+scores['logreg'] = logreg.score(x_test, y_test)
+
+svm = SVC(probability=True) # Probability parameter is important for voting classifier (soft).
+svm.fit(x_train,y_train)
+print('Support Vector Machine (SVM) Score:', svm.score(x_test, y_test))
+scores['svm'] = svm.score(x_test, y_test)
+
+decisiontree = DecisionTreeClassifier()
+decisiontree.fit(x_train, y_train)
+print('Decision Tree Classifier Score:', decisiontree.score(x_test, y_test))
+scores['decisiontree'] = decisiontree.score(x_test, y_test)
+
+knn = KNeighborsClassifier()
+knn.fit(x_train, y_train)
+print('K-Nearest Neighbors Score:', knn.score(x_test, y_test))
+scores['knn'] = knn.score(x_test, y_test)
+
+naivebayes = GaussianNB()
+naivebayes.fit(x_train, y_train)
+print('Naive Bayes Score:', naivebayes.score(x_test, y_test))
+scores['naivebayes'] = naivebayes.score(x_test, y_test)
+
+catboost = CatBoostClassifier(verbose=0)
+catboost.fit(x_train, y_train)
+print('Cat Boost Classifier Score:', catboost.score(x_test, y_test))
+scores['catboost'] = catboost.score(x_test, y_test)
+
+randomforest = RandomForestClassifier()
+randomforest.fit(x_train, y_train)
+print('Random Forest Classifier Score:', randomforest.score(x_test, y_test))
+scores['randomforest'] = randomforest.score(x_test, y_test)
+
+gradientboosting = GradientBoostingClassifier()
+gradientboosting.fit(x_train, y_train)
+print('Gradient Boosting Classifier Score:', gradientboosting.score(x_test, y_test))
+scores['gradientboosting'] = gradientboosting.score(x_test, y_test)
+
 
 
 
