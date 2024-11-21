@@ -150,6 +150,18 @@ gradientboosting.fit(x_train, y_train)
 print('Gradient Boosting Classifier Score:', gradientboosting.score(x_test, y_test))
 scores['gradientboosting'] = gradientboosting.score(x_test, y_test)
 
+voting_clf = VotingClassifier(estimators=[('logreg', logreg), ('svm', svm), ('decisiontree', decisiontree),
+                                          ('knn', knn), ('naivebayes', naivebayes), ('catboost', catboost),
+                                          ('randomforest', randomforest), ('gradientboosting', gradientboosting)],
+                                          voting='soft')
+voting_clf.fit(x_train, y_train)
+print('Train Voting Classifier Score:', voting_clf.score(x_test, y_test))
+print('Test Voting Classifier Score:', voting_clf.score(x_test, y_test))
+
+top_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True)[:5])
+print("Top 5 score:")
+for model, score in top_scores.items(): print(" *", f"{model}: {score}")
+
 
 
 
